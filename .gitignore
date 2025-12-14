@@ -3,3 +3,4 @@ venv
 *.pyc
 yolov8n-pose.pt
 evidence
+samplevid.mp4
