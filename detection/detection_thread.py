@@ -2,6 +2,7 @@ import time
 from PySide6.QtCore import QThread, Signal
 from detection.pose_detector import PoseDetector
 from risk_engine.risk_engine import RiskEngine
+from events.alert_manager import AlertManager
 
 from tracking.tracker import CentroidTracker
 
@@ -16,6 +17,8 @@ class DetectionThread(QThread):
         self.latest_frame = None
         self.running = False
         self.tracker = CentroidTracker()
+        self.alert_manager = AlertManager()
+
 
 
     def submit_frame(self, frame):
@@ -34,14 +37,15 @@ class DetectionThread(QThread):
 
             detections = self.detector.detect(frame)
             detections = self.tracker.update(detections)
-            self.result_ready.emit(frame, detections)
             detections = self.detector.detect(frame)
             detections = self.tracker.update(detections)
 
             risk = self.risk_engine.update(detections)
             self.result_ready.emit(frame, detections, risk)
+            risk = self.risk_engine.update(detections)
             
-
+            self.alert_manager.update(frame, risk)
+            self.result_ready.emit(frame, detections, risk)
 
             time.sleep(0.01)
 
