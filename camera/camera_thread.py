@@ -27,7 +27,6 @@ class CameraThread(QThread):
 
             self.frame_ready.emit(frame)
 
-            # Small sleep to avoid CPU overuse
             time.sleep(0.01)
 
         cap.release()
