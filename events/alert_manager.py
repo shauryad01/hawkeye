@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 class AlertManager:
-    def __init__(self, risk_thresh=0.75, sustain_time=2.0, cooldown=10.0):
+    def __init__(self, risk_thresh=0.75, sustain_time=1.0, cooldown=10.0):
         self.risk_thresh = risk_thresh
         self.sustain_time = sustain_time
         self.cooldown = cooldown
