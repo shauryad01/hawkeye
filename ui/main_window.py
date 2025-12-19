@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QMainWindow, QLabel
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QImage, QPixmap
 import cv2
+import settings
 
 
 class MainWindow(QMainWindow):
@@ -63,35 +64,36 @@ class MainWindow(QMainWindow):
         for d in detections:
             x1, y1, x2, y2 = map(int, d["bbox"])
 
-            # Draw bounding box
-            cv2.rectangle(
-                frame,
-                (x1, y1),
-                (x2, y2),
-                (0, 255, 0),
-                2
-            )
-            pid = d.get("id", -1)
-            cv2.putText(
-                frame,
-                f"ID {pid}",
-                (x1, y1 - 10),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                0.6,
-                (255, 255, 0),
-                2
-            )
+            if settings.DEBUG:
+                # Draw bounding box
+                cv2.rectangle(
+                    frame,
+                    (x1, y1),
+                    (x2, y2),
+                    (0, 255, 0),
+                    2
+                )
+                pid = d.get("id", -1)
+                cv2.putText(
+                    frame,
+                    f"ID {pid}",
+                    (x1, y1 - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.6,
+                    (255, 255, 0),
+                    2
+                )
 
 
-            # Draw keypoints
-            keypoints = d["keypoints"]
-            for x, y, conf in keypoints:
-                if conf > 0.5:
-                    cv2.circle(
-                        frame,
-                        (int(x), int(y)),
-                        3,
-                        (0, 0, 255),
-                        -1
-                    )
+                # Draw keypoints
+                keypoints = d["keypoints"]
+                for x, y, conf in keypoints:
+                    if conf > 0.5:
+                        cv2.circle(
+                            frame,
+                            (int(x), int(y)),
+                            3,
+                            (0, 0, 255),
+                            -1
+                        )
 
