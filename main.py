@@ -12,7 +12,7 @@ def main():
     window = MainWindow()
     window.show()
 
-    camera_thread = CameraThread(src="samplevid.mp4")
+    camera_thread = CameraThread(src=0)
     detection_thread = DetectionThread()
 
     camera_thread.frame_ready.connect(detection_thread.submit_frame)

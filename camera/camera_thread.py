@@ -10,7 +10,7 @@ class CameraThread(QThread):
         super().__init__()
         self.src = src
         self.running = False
-
+    
     def run(self):
         cap = cv2.VideoCapture(self.src)
 
