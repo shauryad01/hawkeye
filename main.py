@@ -1,10 +1,10 @@
 import sys
 from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import Qt
 from detection.detection_thread import DetectionThread
 from settings import CAMERA_SRC
 from ui.main_window import MainWindow
 from camera.camera_thread import CameraThread
-
 
 def main():
     app = QApplication(sys.argv)
@@ -16,7 +16,10 @@ def main():
     detection_thread = DetectionThread()
 
     camera_thread.frame_ready.connect(detection_thread.submit_frame)
-    detection_thread.result_ready.connect(window.update_frame)
+    detection_thread.result_ready.connect(
+        window.on_frame_received,
+        Qt.QueuedConnection
+    )
 
     camera_thread.start()
     detection_thread.start()
